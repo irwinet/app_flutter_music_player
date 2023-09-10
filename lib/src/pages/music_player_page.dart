@@ -1,3 +1,4 @@
+import 'package:app_flutter_music_player/src/helpers/helpers.dart';
 import 'package:flutter/material.dart';
 
 import '../widgets/custom_appbar.dart';
@@ -8,16 +9,68 @@ class MusicPlayerPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
+      body: Stack(
         children: [
-          CustomAppBar(),
+          Background(),
+          Column(
+            children: [
+              CustomAppBar(),
 
-          ImagenDiscoDuracion(),
+              ImagenDiscoDuracion(),
 
-          TituloPlay()
+              TituloPlay(),
+
+              Expanded(
+                child: Lyrics(),
+              )
+            ],
+          ),
         ],
       ),
    );
+  }
+}
+
+class Background extends StatelessWidget {
+  const Background({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+    return Container(
+      width: double.infinity,
+      height: screenSize.height * 0.8,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(bottomLeft: Radius.circular(60)),
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.center,
+          colors: [
+            Color(0xff33333E),
+            Color(0xff201E28),
+          ]
+        )
+      ),
+    );
+  }
+}
+
+class Lyrics extends StatelessWidget {
+  const Lyrics({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final lyrics = getLyrics();
+    return ListWheelScrollView(
+      itemExtent: 42,
+      diameterRatio: 1.5,
+      physics: BouncingScrollPhysics(),
+      children: lyrics.map((linea) => Text(linea, style: TextStyle(fontSize: 20, color: Colors.white.withOpacity(0.6)),)).toList(),
+    );
   }
 }
 
@@ -32,7 +85,7 @@ class ImagenDiscoDuracion extends StatelessWidget {
         children: [
           // TODO Disco
           ImagenDisco(),
-          SizedBox(width: 40,),
+          SizedBox(width: 100,),
           //TODO Barra progreso
           BarraProgreso(),
           SizedBox(width: 20,),
