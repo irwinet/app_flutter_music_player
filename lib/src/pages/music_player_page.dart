@@ -1,6 +1,9 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:app_flutter_music_player/src/helpers/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../models/audioplayer_model.dart';
 import '../widgets/custom_appbar.dart';
 
 
@@ -150,12 +153,15 @@ class _TituloPlayState extends State<TituloPlay> with SingleTickerProviderStateM
             ),
             onPressed: () {
               // TODO Boton
+              final audioPlayerModel = Provider.of<AudioPlayerModel>(context, listen: false);
               if(this.isPlaying){
                 playAnimation.reverse();
                 this.isPlaying = false;
+                audioPlayerModel.controller.stop();
               }else{
                 playAnimation.forward();
                 this.isPlaying = true;
+                audioPlayerModel.controller.repeat();
               }
             },
           )
@@ -202,6 +208,7 @@ class ImagenDisco extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final audioPlayerModel = Provider.of<AudioPlayerModel>(context);
     return Container(
       padding: EdgeInsets.all(20),
       width: 250,
@@ -211,7 +218,13 @@ class ImagenDisco extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            Image(image: AssetImage('assets/aurora.jpg')),
+            SpinPerfect(
+              duration: Duration(seconds: 10),
+              infinite: true,
+              manualTrigger: true,
+              controller: (animationController) => audioPlayerModel.controller = animationController,
+              child: Image(image: AssetImage('assets/aurora.jpg'))
+            ),
             Container(
               width: 25,
               height: 25,
