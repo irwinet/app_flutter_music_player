@@ -96,10 +96,33 @@ class ImagenDiscoDuracion extends StatelessWidget {
   }
 }
 
-class TituloPlay extends StatelessWidget {
+class TituloPlay extends StatefulWidget {
   const TituloPlay({
     super.key,
   });
+
+  @override
+  State<TituloPlay> createState() => _TituloPlayState();
+}
+
+class _TituloPlayState extends State<TituloPlay> with SingleTickerProviderStateMixin {
+
+  bool isPlaying = false;
+  late AnimationController playAnimation;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    playAnimation = AnimationController(vsync: this, duration: Duration(milliseconds: 500));
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    this.playAnimation.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -121,10 +144,20 @@ class TituloPlay extends StatelessWidget {
             backgroundColor: Color(0xffF8CB51),
             elevation: 0,
             highlightElevation: 0,
+            child: AnimatedIcon(
+              icon: AnimatedIcons.play_pause,
+              progress: playAnimation,
+            ),
             onPressed: () {
               // TODO Boton
+              if(this.isPlaying){
+                playAnimation.reverse();
+                this.isPlaying = false;
+              }else{
+                playAnimation.forward();
+                this.isPlaying = true;
+              }
             },
-            child: Icon(Icons.play_arrow),
           )
         ],
       ),
