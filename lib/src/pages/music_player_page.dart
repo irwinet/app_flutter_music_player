@@ -24,11 +24,49 @@ class ImagenDiscoDuracion extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.symmetric(horizontal: 30),
+      margin: EdgeInsets.only(top: 70),
       child: Row(
         children: [
           // TODO Disco
-          ImagenDisco()
+          ImagenDisco(),
+          SizedBox(width: 20,),
           //TODO Barra progreso
+          BarraProgreso(),
+          SizedBox(width: 20,),
+        ],
+      ),
+    );
+  }
+}
+
+class BarraProgreso extends StatelessWidget {
+
+  @override
+  Widget build(BuildContext context) {
+    final estilo = TextStyle(color: Colors.white.withOpacity(0.4));
+    return Container(
+      child: Column(
+        children: [
+          Text('00:00', style: estilo,),
+          Stack(
+            children: [
+              Container(
+                width: 3,
+                height: 230,
+                color: Colors.white.withOpacity(0.1),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Container(
+                  width: 3,
+                  height: 100,
+                  color: Colors.white.withOpacity(0.8),
+                ),
+              )
+            ],
+          ),
+          Text('00:00', style: estilo,),
         ],
       ),
     );
